@@ -18,6 +18,13 @@
 
 * [Calling functions of other contracts on Solidity | by Graphicaldot (Saurav verma) | Aug, 2020 | Medium](https://medium.com/@houzier.saurav/calling-functions-of-other-contracts-on-solidity-9c80eed05e0f)
 
+
+* [All you should know about libraries in solidity | by Sarvesh Jain | Coinmonks | Medium](https://medium.com/coinmonks/all-you-should-know-about-libraries-in-solidity-dd8bc953eae7)
+
+* [blockchain - What is the difference between an internal/external and public/private function in solidity? - Stack Overflow](https://stackoverflow.com/questions/47622265/what-is-the-difference-between-an-internal-external-and-public-private-function#:~:text=4-,What%20is%20the%20difference%20between%20an%20internal%2Fexternal,public%2Fprivate%20function%20in%20solidity%3F&text=By%20default%2C%20function%20types%20are,type%2C%20the%20default%20is%20internal.)
+
+* [Unable to link libraries with Buidler (and other issues with Waffle) · Issue #611 · nomiclabs/buidler](https://github.com/nomiclabs/buidler/issues/611)
+
 ---
 
 ## Example-1 :: Fibonacci

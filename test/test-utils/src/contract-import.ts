@@ -1,5 +1,10 @@
 import * as path from 'path'
-import { ethers, Contract, ContractFactory, Signer, BigNumberish } from 'ethers'
+
+import { ethers } from '@nomiclabs/buidler'
+import { Artifact } from '@nomiclabs/buidler/types'
+
+import { Contract, ContractFactory, Signer, BigNumberish, providers } from 'ethers'
+
 import { Interface } from 'ethers/lib/utils'
 import { ContractDeployOptions } from "../intf/gdefs"
 
@@ -26,6 +31,34 @@ export const getContractFactory = (
 }
 
 
+export const linkBytecode = async (artifact: Artifact, libraries: any ): Promise<string> => {
+
+  let bytecode = artifact.bytecode;
+
+  for (const [fileName, fileReferences] of Object.entries(
+    artifact.linkReferences
+  )) {
+    for (const [libName, fixups] of Object.entries(fileReferences)) {
+
+      const addr = libraries[libName];
+
+      if (addr === undefined) {
+        continue;
+      }
+
+      for (const fixup of fixups) {
+        bytecode =
+          bytecode.substr(0, 2 + fixup.start * 2) +
+          addr.substr(2) +
+          bytecode.substr(2 + (fixup.start + fixup.length) * 2);
+      }
+    }
+  }
+
+  return bytecode;
+
+}
+
 /**
  * Deploys a single contract.
  * @param config Contract deployment configuration.
@@ -41,8 +74,6 @@ export const deployContract = async (
   // Can't use this because it fails on ExecutionManager & FraudVerifier
   // return config.factory.deploy(...config.params)
 
-  
-
   const deployResult = await config.signer.sendTransaction({
     data: rawTx.data,
     gasLimit: 9_500_000,
@@ -51,7 +82,7 @@ export const deployContract = async (
     nonce: await config.signer.getTransactionCount('pending'),
   })
 
-  const receipt: ethers.providers.TransactionReceipt = await config.signer.provider.waitForTransaction(
+  const receipt: providers.TransactionReceipt = await config.signer.provider.waitForTransaction(
     deployResult.hash
   )
 
